@@ -21,19 +21,27 @@ Lufar.TkWebView = {};
 /////// Lufar 名前空間
 (function() {
   /**
+   * @static
+   * @property containerId
+   * @type String
    * 各 DOM オブジェクトの親となる DOM 要素の ID (第三者が改造する用)
    */
   this.containerId = 'Lufar_Container';
 
   /**
+   * @static
+   * @property containerZIndex
+   * @type Number
    * container の描画順位
    */
-  this.containerZIndex = 4;
+  this.containerZIndex = 100;
 
   /**
+   * @static
+   * @method addPluginCommand
    * プラグインコマンドの登録
-   * @param cmd String 対応するコマンド
-   * @param func Function コマンドを処理する関数
+   * @param {String} cmd 対応するコマンド
+   * @param {Function} func コマンドを処理する関数
    */
   this.addPluginCommand = function(cmd, func) {
     var super_ = Game_Interpreter.prototype.pluginCommand;
@@ -46,7 +54,10 @@ Lufar.TkWebView = {};
   }
 
   /**
+   * @static
+   * @method getContainerDOM
    * DOM 要素配置用ブロックの取得 (なければ作成)
+   * @return DOMElement
    */
   this.getContainerDOM = function() {
     var div = document.getElementById(this.containerId);
@@ -69,7 +80,9 @@ Lufar.TkWebView = {};
     return div;
   }
 
-  /*
+  /**
+   * @static
+   * @method removeContainerDOM
    * div を消す
    */
   this.removeContainerDOM = function() {
@@ -79,15 +92,37 @@ Lufar.TkWebView = {};
     }
   }
 }).call(Lufar);
+// ツクールの Graphics クラスに差し込む処理
+(function() {
+  var org_updateRealScale = Graphics._updateRealScale;
+  /**
+   * @static
+   * @method _updateRealScale
+   * @private
+   * 画面拡大率の更新
+   */
+  Graphics._updateRealScale = function() {
+    org_updateRealScale.call(this);
+    // Lufar_Container も拡大率を更新
+    var container = Lufar.getContainerDOM();
+    container.style.zoom = this._realScale;
+  }
+})();
 
 /////// Lufar.TkWebView 名前空間
 (function() {
   /**
+   * @static
+   * @property iframeId
+   * @type String
    * WebView の DOM 上 ID (第三者が改造する用)
    */
   this.iframeId = 'TkWebView';
 
   /**
+   * @static
+   * @method getWebViewDOM
+   * @return DOMElement
    * iframe 取得 (なければ作成)
    */
   this.getWebViewDOM = function() {
@@ -108,7 +143,9 @@ Lufar.TkWebView = {};
     return iframe;
   }
 
-  /*
+  /**
+   * @static
+   * @method removeWebViewDOM
    * iframe を消す
    */
   this.removeWebViewDOM = function() {
@@ -119,6 +156,8 @@ Lufar.TkWebView = {};
   }
 
   /**
+   * @static
+   * @method showWebViewDOM
    * WebView を表示する
    * @param location String 表示したい Web ページの URL
    * @param x Number WebView 左上すみの x 座標
