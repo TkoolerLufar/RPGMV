@@ -105,7 +105,10 @@ Lufar.TkWebView = {};
     org_updateRealScale.call(this);
     // Lufar_Container も拡大率を更新
     var container = Lufar.getContainerDOM();
-    container.style.zoom = this._realScale;
+    for (var prefix in {'':0, 'webkit':0, 'ms':0, 'moz':0, 'o':0}) {
+      container.style[prefix ? prefix + 'Transform' : 'transform'] =
+        'scale(' + this._realScale + ')';
+    }
   }
 })();
 
