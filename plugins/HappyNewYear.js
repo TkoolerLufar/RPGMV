@@ -1,11 +1,11 @@
-/*:en
+﻿/*:
  * @plugindesc
  * A useful plugin to celebrate a happy new year.
  *
  * @author
  * Lufar (http://rufer.my.land.to/)
  *
- * @param FrameRate
+ * @param frameRate
  * @desc The frame rate of this game. It's 60 in usual.
  * @default 60
  *
@@ -22,7 +22,7 @@
  * @author
  * ルファー (http://rufer.my.land.to/)
  *
- * @param FrameRate
+ * @param frameRate
  * @desc このゲームのフレームレート。普通は 60 です。
  * @default 60
  *
@@ -54,7 +54,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			var diffMilliSecs = nextYear.getTime() - now.getTime();
 
 			// milliseconds -> frames (= 1/60 secs)
-			return Math.floor(diffMilliSecs * 60 / 1000 + 0.5);
+			return Math.floor(diffMilliSecs *
+				parseInt(PluginManager.parameters('HappyNewYear').frameRate) / 1000 + 0.5);
 		}
 	};
 })();
